@@ -2,6 +2,8 @@
 
 **EduMind** is an AI lab final project that combines a **classical expert system** (Prolog) with **computer vision observations** (OpenCV + MediaPipe). The camera does not make decisions — it only supplies facts. Prolog applies rules and performs backward-chaining inference to conclude attention level, behavior, risk, and recommendations.
 
+📄 [Full Project Report](AI%20Terminal%20Proj%20Report.pdf)
+
 ## Problem Statement
 
 Online and hybrid students often disengage silently (gaze away, fatigue, phone use). EduMind acts as a smart classroom observer: it watches behavior, represents knowledge as logical facts, applies expert rules, and explains its conclusions — matching core AI course topics (knowledge representation, rules, inference, reasoning).
