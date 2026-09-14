@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}About AI{% endblock %}
+
+{% block content %}
+<section class="page-header fade-up">
+  <h1>About EduMind &amp; AI Concepts</h1>
+  <p class="muted">Problem statement, scope, and viva-ready explanations</p>
+</section>
+
+<section class="grid-2">
+  <article class="card fade-up">
+    <h2>Problem Statement</h2>
+    <p>
+      Students in online or hybrid classrooms often disengage silently — looking away, using phones,
+      or showing fatigue. Teachers cannot monitor every learner continuously. EduMind acts as an
+      intelligent classroom observer that converts visual cues into logical facts and applies expert
+      rules to infer behavior and recommend corrective actions.
+    </p>
+  </article>
+  <article class="card fade-up">
+    <h2>Project Scope</h2>
+    <ul class="feature-list">
+      <li>Single-user laptop webcam monitoring</li>
+      <li>Behavior fact extraction (not raw CV decisions)</li>
+      <li>Prolog-based expert reasoning engine</li>
+      <li>Session analytics and recommendations</li>
+      <li>Educational GUI for demonstration and viva</li>
+    </ul>
+  </article>
+</section>
+
+<section class="card fade-up concept-table-wrap">
+  <h2>AI Course Mapping</h2>
+  <table class="concept-table">
+    <thead>
+      <tr><th>Concept</th><th>Implementation in EduMind</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Knowledge representation</td><td><code>observation/1</code> facts from CV module</td></tr>
+      <tr><td>Rules</td><td>Horn clauses in <code>prolog/knowledge_base.pl</code></td></tr>
+      <tr><td>Inference</td><td>Prolog backward chaining (SLD resolution)</td></tr>
+      <tr><td>Expert system</td><td>Separate observation, KB, inference, explanation layers</td></tr>
+      <tr><td>Reasoning</td><td>Logical derivation of attention, risk, advice</td></tr>
+      <tr><td>Computer vision</td><td>OpenCV + MediaPipe — observations only</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card fade-up">
+  <h2>Why OpenCV Does Not “Decide”</h2>
+  <p>
+    The CV layer answers: <em>what is visible?</em> (eyes closed, gaze away, hands near face).
+    The Prolog layer answers: <em>what does it mean?</em> (sleepy, distracted, attentive).
+    This separation is the hallmark of a classical expert system and distinguishes this
+    project from a pure computer-vision application.
+  </p>
+</section>
+{% endblock %}

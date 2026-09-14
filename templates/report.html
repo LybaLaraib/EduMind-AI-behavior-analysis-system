@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}Session Report{% endblock %}
+
+{% block content %}
+<section class="page-header fade-up">
+  <h1>Session Report</h1>
+  <p class="muted">How EduMind analyzed your session — posture facts, expert inference, and engagement time</p>
+</section>
+
+<section class="grid-3 stagger report-stats">
+  <div class="stat card fade-up">
+    <span class="stat-value">{{ summary.frames }}</span>
+    <span class="stat-label">Frames analyzed</span>
+  </div>
+  <div class="stat card fade-up">
+    <span class="stat-value">{{ summary.average_attention }}%</span>
+    <span class="stat-label">Average attention</span>
+  </div>
+  <div class="stat card fade-up">
+    <span class="stat-value stat-text">{{ summary.dominant_behavior }}</span>
+    <span class="stat-label">Dominant behavior</span>
+  </div>
+</section>
+
+{% if summary.frames > 0 and summary.fact_session_totals %}
+<section class="card fade-up fact-totals-section">
+  <h2>Confirmed Fact Durations</h2>
+  <p class="muted small">Facts are counted only after sustained detection (e.g. eyes closed for 2+ seconds continuously). Totals sum every period in the session.</p>
+  <div class="fact-totals-table-wrap">
+    <table class="concept-table fact-totals-table">
+      <thead>
+        <tr>
+          <th>Fact</th>
+          <th>Total time</th>
+          <th>Frames</th>
+          <th>Periods</th>
+          <th>% of session</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, item in summary.fact_session_totals.items() %}
+        <tr{% if key == 'eyes_closed' %} class="highlight-row"{% endif %}>
+          <td><strong>{{ item.label }}</strong></td>
+          <td>{{ item.duration_label }}</td>
+          <td><code>{{ item.frames }}</code></td>
+          <td>{{ item.periods }}</td>
+          <td>{{ item.percent }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{% if summary.frames > 0 %}
+<section class="grid-3 stagger engagement-stats">
+  {% for key, stat in summary.behavior_stats.items() %}
+  <div class="stat card fade-up engagement-stat">
+    <span class="stat-value stat-text">{{ stat.duration_label }}</span>
+    <span class="stat-label">{{ stat.label }}</span>
+    <span class="stat-meta">{{ stat.percent }}% · {{ stat.frames }} frames{% if stat.periods is defined %} · {{ stat.periods }} periods{% endif %}</span>
+  </div>
+  {% endfor %}
+  <div class="stat card fade-up">
+    <span class="stat-value stat-text">{{ summary.duration_label }}</span>
+    <span class="stat-label">Total session duration</span>
+  </div>
+</section>
+{% endif %}
+
+<section class="card fade-up chart-card">
+  <h2>Attention Timeline</h2>
+  <p class="muted small chart-caption">X-axis: elapsed session time (seconds) · Y-axis: attention score (0–100)</p>
+  <div class="chart-wrap">
+    <canvas id="timelineChart" height="120"></canvas>
+  </div>
+  {% if summary.frames == 0 %}
+  <p class="muted chart-empty">No session data yet. Run a monitoring session on the Live Monitor page.</p>
+  {% endif %}
+</section>
+
+<section class="card fade-up">
+  <h2>How This Report Was Generated</h2>
+  <ol class="methodology-list">
+    {% for step in summary.report_methodology %}
+    <li>{{ step }}</li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% if summary.inference_timeline %}
+<section class="card fade-up">
+  <h2>Expert System Applications</h2>
+  <p class="muted">Points where backward chaining, unification, modus ponens, and inference produced results:</p>
+  <div class="inference-timeline-table-wrap">
+    <table class="concept-table inference-table">
+      <thead>
+        <tr><th>Time (s)</th><th>Technique</th><th>Rule / Step</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        {% for item in summary.inference_timeline %}
+        <tr>
+          <td>{{ item.t }}</td>
+          <td><span class="technique-tag">{{ item.technique }}</span></td>
+          <td><code>{{ item.rule }}</code></td>
+          <td>{{ item.result }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="card fade-up report-actions">
+  <h2>Continue Your Session</h2>
+  <p>Run another live monitor to refresh this report, or review the Prolog rules that powered these conclusions.</p>
+  <div class="btn-row">
+    <a href="{{ url_for('main.monitor') }}" class="btn btn-primary">Open Live Monitor</a>
+    <a href="{{ url_for('main.knowledge') }}" class="btn btn-ghost">Knowledge Base</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  const timeline = {{ summary.timeline | tojson }};
+  const durationLabel = {{ summary.duration_label | tojson }};
+  if (timeline.length > 0) {
+    const ctx = document.getElementById('timelineChart');
+    const maxT = timeline[timeline.length - 1].t || timeline.length;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: timeline.map(p => p.t + 's'),
+        datasets: [{
+          label: 'Attention score (%)',
+          data: timeline.map(p => p.score),
+          borderColor: '#2dd4bf',
+          backgroundColor: 'rgba(45, 212, 191, 0.15)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: { duration: 800, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { display: true, labels: { color: '#94a3b8' } },
+          title: {
+            display: true,
+            text: 'Attention over session (' + durationLabel + ')',
+            color: '#e2e8f0',
+            font: { size: 14, weight: '500' },
+          },
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Time (seconds)', color: '#94a3b8' },
+            grid: { color: 'rgba(148, 163, 184, 0.08)' },
+            ticks: { color: '#94a3b8', maxTicksLimit: 12 },
+          },
+          y: {
+            title: { display: true, text: 'Attention score', color: '#94a3b8' },
+            min: 0,
+            max: 100,
+            grid: { color: 'rgba(148, 163, 184, 0.08)' },
+            ticks: { color: '#94a3b8' },
+          },
+        },
+      },
+    });
+  }
+</script>
+{% endblock %}

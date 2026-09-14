@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero hero-split">
+  <div class="hero-content fade-up">
+    <p class="eyebrow">Intelligent Classroom Behavior Expert System</p>
+    <h1>Observe posture.<br>Reason like an expert.</h1>
+    <p class="lead">
+      EduMind tracks <strong>posture, eyes, mobile cues, and face presence</strong> with OpenCV and MediaPipe, then applies
+      <strong>Prolog backward chaining</strong> to infer attention, risk, and personalized
+      guidance — a classical AI expert system built for real learning environments.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('main.monitor') }}" class="btn btn-primary btn-lg">Start Live Monitor</a>
+      <a href="{{ url_for('main.knowledge') }}" class="btn btn-ghost btn-lg">Explore Knowledge Base</a>
+    </div>
+    <ul class="hero-highlights">
+      <li>Real-time posture, eye &amp; mobile detection</li>
+      <li>Prolog rule-based inference</li>
+      <li>Session analytics &amp; reports</li>
+    </ul>
+  </div>
+  <div class="hero-visual fade-up">
+    <div class="hero-image-frame">
+      <img src="{{ url_for('static', filename='images/hero-image.jpg') }}" alt="Student learning with AI posture monitoring" class="hero-image">
+      <div class="hero-image-glow"></div>
+    </div>
+  </div>
+</section>
+
+<section class="quick-start card fade-up">
+  <h2>Quick Start</h2>
+  <ol class="steps-list">
+    <li><span>1</span> Open <strong>Live Monitor</strong> and allow webcam access.</li>
+    <li><span>2</span> Click <strong>Start Monitoring</strong> — facts update every 1 s (eyes closed after 2+ s hold).</li>
+    <li><span>3</span> Read expert conclusions and dynamic recommendations in the side panel.</li>
+    <li><span>4</span> Stop the session and open <strong>Session Report</strong> for analytics.</li>
+  </ol>
+</section>
+
+<section class="grid-3 stagger">
+  <article class="card card-hover fade-up">
+    <div class="card-icon">01</div>
+    <h3>Knowledge Representation</h3>
+    <p>Head yaw, pitch, and gaze alignment become Prolog facts such as <code>looking_away</code> and <code>upright_posture</code>.</p>
+  </article>
+  <article class="card card-hover fade-up">
+    <div class="card-icon">02</div>
+    <h3>Rule-Based Inference</h3>
+    <p>Horn clauses use backward chaining, unification, and modus ponens to derive attentive or distracted states.</p>
+  </article>
+  <article class="card card-hover fade-up">
+    <div class="card-icon">03</div>
+    <h3>Expert Recommendations</h3>
+    <p>Recommendations adapt to your current posture — not static text — with clear reasoning for every conclusion.</p>
+  </article>
+</section>
+
+<section class="flow-section card fade-up">
+  <h2>System Architecture</h2>
+  <div class="architecture-flow">
+    <div class="flow-node">Webcam</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">OpenCV + MediaPipe</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Posture Facts</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">Prolog Expert Engine</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Analysis &amp; Advice</div>
+  </div>
+  <p class="muted">
+    Computer vision supplies <em>what is visible</em> (head angle, gaze). Prolog decides
+    <em>what it means</em> (focused, diverged, disengaged).
+  </p>
+</section>
+
+<section class="stats-row stagger">
+  <div class="stat card fade-up">
+    <span class="stat-value">6+</span>
+    <span class="stat-label">Expert Prolog rules</span>
+  </div>
+  <div class="stat card fade-up">
+    <span class="stat-value">CV</span>
+    <span class="stat-label">Smoothed head tracking</span>
+  </div>
+  <div class="stat card fade-up">
+    <span class="stat-value">AI</span>
+    <span class="stat-label">Backward chaining + modus ponens</span>
+  </div>
+</section>
+
+<section class="cta-band fade-up">
+  <h2>Ready to analyze your session?</h2>
+  <p class="muted">Run a live monitor, then review detailed engagement statistics on the report page.</p>
+  <a href="{{ url_for('main.monitor') }}" class="btn btn-primary">Launch Monitor</a>
+  <a href="{{ url_for('main.report') }}" class="btn btn-ghost">View Last Report</a>
+</section>
+{% endblock %}

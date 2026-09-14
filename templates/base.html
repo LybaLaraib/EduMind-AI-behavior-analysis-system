@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}EduMind{% endblock %} — Classroom Behavior Expert System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <a href="{{ url_for('main.index') }}" class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-text">EduMind</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="siteNav">
+        <a href="{{ url_for('main.index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('main.monitor') }}" class="nav-link {% if request.endpoint == 'main.monitor' %}active{% endif %}">Live Monitor</a>
+        <a href="{{ url_for('main.report') }}" class="nav-link {% if request.endpoint == 'main.report' %}active{% endif %}">Session Report</a>
+        <a href="{{ url_for('main.knowledge') }}" class="nav-link {% if request.endpoint == 'main.knowledge' %}active{% endif %}">Knowledge Base</a>
+        <a href="{{ url_for('main.about') }}" class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}">About AI</a>
+      </nav>
+    </header>
+
+    <main class="main-content page-enter{% if page_class %} {{ page_class }}{% endif %}">
+      {% if request.endpoint != 'main.index' %}
+      <nav class="page-back fade-up" aria-label="Back navigation">
+        <a href="javascript:history.back()" class="btn-back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          Back
+        </a>
+      </nav>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <p>EduMind — Expert System (Prolog) + Head Posture (OpenCV) · AI Lab Final Project</p>
+      <p class="footer-meta">Engine: <code>{{ info.engine if info else '—' }}</code></p>
+    </footer>
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

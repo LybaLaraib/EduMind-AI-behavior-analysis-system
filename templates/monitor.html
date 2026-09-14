@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Live Monitor{% endblock %}
+
+{% block head %}
+<style>
+  .main-content.monitor-page { max-width: 1520px; padding-top: 0.5rem; }
+  .monitor-page .page-back { margin-bottom: 0.35rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-header monitor-header fade-up">
+  <div>
+    <h1>Live Behavior Monitor</h1>
+    <p class="muted">Cyan face mesh · Confirmed facts · Prolog expert reasoning</p>
+  </div>
+</section>
+
+<div class="monitor-layout-side">
+  <div class="monitor-video-column card fade-up">
+    <div class="camera-frame mesh-frame">
+      <div class="video-wrap monitor-video-wrap">
+        <video id="webcam" autoplay playsinline muted></video>
+        <canvas id="captureCanvas" hidden></canvas>
+        <img id="previewOverlay" class="preview-overlay" alt="" role="presentation" hidden>
+        <div id="liveLabels" class="live-labels live-labels-hud" aria-live="polite"></div>
+        <div id="cameraPlaceholder" class="camera-placeholder">
+          <div class="placeholder-icon">◎</div>
+          <p>Camera inactive</p>
+          <span class="muted">Click Start Monitoring to begin</span>
+        </div>
+      </div>
+      <div class="camera-status-bar">
+        <span class="pulse-dot" id="livePulse"></span>
+        <span id="postureStatus">Awaiting posture data</span>
+        <span class="status-sep">·</span>
+        <span id="eyesHoldStatus" class="muted small">Eyes: —</span>
+      </div>
+    </div>
+    <div class="control-bar">
+      <button id="btnStart" class="btn btn-primary">Start Monitoring</button>
+      <button id="btnStop" class="btn btn-ghost" disabled>Stop</button>
+      <span id="sessionBadge" class="badge">Session idle</span>
+    </div>
+  </div>
+
+  <aside class="monitor-side-column">
+    <div class="card fade-up panel-score monitor-side-card">
+      <h3>Attention Score</h3>
+      <div class="score-ring" id="scoreRing">
+        <svg viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="scoreCircle" cx="60" cy="60" r="52"/>
+        </svg>
+        <span class="score-value" id="attentionScore">—</span>
+      </div>
+      <p class="muted small" id="frameCounter">Frames analyzed: 0</p>
+    </div>
+
+    <div class="card fade-up monitor-side-card">
+      <h3>Expert Conclusions</h3>
+      <dl class="result-list compact-results">
+        <div><dt>Attention</dt><dd id="outAttention" class="pill">—</dd></div>
+        <div><dt>Behavior</dt><dd id="outBehavior" class="pill">—</dd></div>
+        <div><dt>Risk</dt><dd id="outRisk" class="pill">—</dd></div>
+      </dl>
+    </div>
+
+    <div class="card fade-up monitor-side-card">
+      <h3>Active Observations</h3>
+      <ul id="factsList" class="facts-list">
+        <li class="muted">Waiting for data…</li>
+      </ul>
+      <p class="muted small metrics-line" id="metricsLine">Yaw — · Pitch — · EAR —</p>
+    </div>
+
+    <div class="card fade-up monitor-side-card session-facts-card">
+      <h3>Session Totals</h3>
+      <dl class="session-facts-dl">
+        <div><dt>Eyes closed</dt><dd id="sessEyesClosed">0 sec · 0 fr</dd></div>
+        <div><dt>Looking away</dt><dd id="sessLookingAway">0 sec · 0 fr</dd></div>
+        <div><dt>Head down</dt><dd id="sessHeadDown">0 sec · 0 fr</dd></div>
+        <div><dt>Phone</dt><dd id="sessPhone">0 sec · 0 fr</dd></div>
+      </dl>
+    </div>
+  </aside>
+</div>
+
+<div class="monitor-scroll-section">
+  <div class="card fade-up panel-advice">
+    <h3>Expert Recommendation</h3>
+    <p id="outRecommendation" class="advice-text advice-dynamic">Start monitoring to receive guidance.</p>
+    <p class="muted small"><strong>Reason:</strong> <span id="outReason">—</span></p>
+  </div>
+  <div class="card fade-up inference-steps-card">
+    <h3>Inference Trace</h3>
+    <ul id="inferenceSteps" class="inference-steps-list">
+      <li class="muted">Start monitoring to see chaining steps…</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/monitor.js') }}"></script>
+{% endblock %}

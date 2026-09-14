@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Knowledge Base{% endblock %}
+
+{% block content %}
+<section class="page-header fade-up">
+  <h1>Prolog Knowledge Base</h1>
+  <p class="muted">Posture, eyes, mobile, and face facts — Horn clauses with backward-chaining inference</p>
+</section>
+
+<section class="grid-2 kb-intro">
+  <article class="card fade-up">
+    <h2>Dynamic Facts</h2>
+    <p>Observations from the posture monitor are asserted at runtime:</p>
+    <pre class="code-block"><code>observation(eyes_closed).
+observation(looking_away).
+observation(head_down).
+observation(phone_suspected).
+observation(hand_near_face).
+observation(no_face).
+observation(face_detected).</code></pre>
+  </article>
+
+  <article class="card fade-up">
+    <h2>Inference Techniques</h2>
+    <ul class="feature-list">
+      <li><strong>Backward chaining</strong> — prove goals like <code>attentive_student</code> by matching rule heads</li>
+      <li><strong>Unification</strong> — variables bind during SLD resolution across clauses</li>
+      <li><strong>Modus ponens</strong> — <code>attention_level(high) :- attentive_student</code></li>
+      <li><strong>Inference</strong> — derive risk and behavior from proven posture rules</li>
+      <li><strong>Expert system</strong> — separates knowledge, inference engine, and explanation</li>
+    </ul>
+  </article>
+</section>
+
+<section class="card fade-up rules-section">
+  <h2>Expert Rules Catalog</h2>
+  <div class="rules-grid">
+    {% for rule in rules %}
+    <div class="rule-card">
+      <span class="rule-id">{{ rule.id }}</span>
+      <h3>{{ rule.name }}</h3>
+      <span class="rule-type">{{ rule.type }}</span>
+      <pre class="rule-code">{{ rule.rule }}</pre>
+      <p>{{ rule.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="grid-2">
+  <article class="card fade-up">
+    <h2>Sample Horn Clauses</h2>
+    <pre class="code-block"><code>sleepy_student :-
+    observation(eyes_closed),
+    observation(head_down).
+
+phone_usage_suspected :-
+    observation(hand_near_face),
+    observation(looking_down).
+
+attentive_student :-
+    observation(eye_contact),
+    observation(upright_posture),
+    \+ observation(eyes_closed),
+    \+ observation(phone_suspected).
+
+attention_level(high) :- attentive_student.</code></pre>
+  </article>
+
+  <article class="card fade-up">
+    <h2>Reasoning Flow</h2>
+    <div class="reasoning-flow">
+      <div class="reason-step"><span>1</span> CV asserts posture facts</div>
+      <div class="reason-step"><span>2</span> Backward chaining proves behavior</div>
+      <div class="reason-step"><span>3</span> Modus ponens maps to attention level</div>
+      <div class="reason-step"><span>4</span> Expert system outputs recommendation</div>
+    </div>
+    <a href="{{ url_for('main.monitor') }}" class="btn btn-primary" style="margin-top:1rem">Try Live Monitor</a>
+  </article>
+</section>
+{% endblock %}
