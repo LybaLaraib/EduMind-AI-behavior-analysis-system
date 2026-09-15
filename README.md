@@ -3,6 +3,20 @@
 **EduMind** is an AI lab final project that combines a **classical expert system** (Prolog) with **computer vision observations** (OpenCV + MediaPipe). The camera does not make decisions — it only supplies facts. Prolog applies rules and performs backward-chaining inference to conclude attention level, behavior, risk, and recommendations.
 
 📄 [Full Project Report](AI%20Terminal%20Proj%20Report.pdf)
+## Live Demo
+
+🔗 **[Try EduMind live](https://edumind-t0h9.onrender.com)**
+
+## Screenshots
+
+![Dashboard](screenshots/dashboard.png)
+*Home dashboard — system overview and quick start*
+
+![Live Monitor](screenshots/live-monitor.png)
+*Real-time webcam monitoring with Prolog-based attention scoring*
+
+![Session Report](screenshots/session-report.png)
+*Post-session analytics — confirmed fact durations and attention breakdown*
 
 ## Problem Statement
 
@@ -84,7 +98,6 @@ Open **http://127.0.0.1:5000** in Chrome/Edge, allow camera access on **Live Mon
 
 For demonstrations and viva, install SWI-Prolog so mode shows `pyswip` or `swipl_cli`.
 
-## Viva Talking Points
 
 1. **OpenCV does not decide** — only extracts facts (`eyes_closed`, `looking_away`, …).
 2. **Prolog decides** — rules like `sleepy_student :- eyes_closed, head_down.`
